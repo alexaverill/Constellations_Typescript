@@ -36,11 +36,8 @@ var AnimatedPoint = /** @class */ (function () {
         else if (this.position.x < 0) {
             this.position.x = this.bounds.x - 10;
         }
-        if (this.position.y > this.bounds.y) {
-            this.position.y = 10;
-        }
-        else if (this.position.y < 0) {
-            this.position.y = this.bounds.y - 10;
+        if (this.position.y > this.bounds.y || this.position.y < 0) {
+            this.speed.y *= -1;
         }
         this.position.x += this.speed.x;
         this.position.y += this.speed.y;
@@ -54,7 +51,7 @@ var Rendering = /** @class */ (function () {
     function Rendering(canvas) {
         this.colorString = 'rgb(200,0,0)';
         this.pointsList = [];
-        this.seperationDistance = 90;
+        this.seperationDistance = 70;
         this.canvas = canvas;
         this.context = canvas.getContext('2d');
         this.setBackgroundColor(this.colorString);
@@ -72,14 +69,14 @@ var Rendering = /** @class */ (function () {
         this.context.fillRect(0, 0, 800, 800);
     };
     Rendering.prototype.update = function () {
-        this.context.fillStyle = 'black';
+        var _this = this;
+        this.context.fillStyle = 'rgb(235, 235, 200)';
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         for (var i = 0; i < this.pointsList.length - 1; i++) {
             this.pointsList[i].update();
             this.context.beginPath();
             this.context.moveTo(this.pointsList[i].position.x, this.pointsList[i].position.y);
             this.context.arc(this.pointsList[i].position.x, this.pointsList[i].position.y, this.pointsList[i].width, 0, 360);
-            this.context.fill();
             this.context.fill();
             for (var x = i + 1; x < this.pointsList.length - 1; x++) {
                 if (x != this.pointsList.length - 1) {
@@ -88,12 +85,15 @@ var Rendering = /** @class */ (function () {
                     }
                 }
             }
+            this.context.strokeStyle = 'white';
             this.context.stroke();
         }
+        requestAnimationFrame(function () { return _this.update(); });
     };
     return Rendering;
 }());
 function initialize() {
     var render = new Rendering(document.getElementById("mainCanvas"));
-    var timer = setInterval(function () { return render.update(); }, 18);
+    requestAnimationFrame(function () { return render.update(); });
+    //var timer = setInterval(()=>render.update(), 18);
 }

@@ -38,11 +38,10 @@ class AnimatedPoint {
         }else if( this.position.x  <0){
             this.position.x = this.bounds.x -10;
         }
-        if(this.position.y > this.bounds.y){
-            this.position.y = 10;
-        }else if( this.position.y <0){
-            this.position.y = this.bounds.y -10;
+        if(this.position.y > this.bounds.y || this.position.y < 0){
+            this.speed.y *= -1;
         }
+            
         this.position.x += this.speed.x;
         this.position.y += this.speed.y;
     }
@@ -56,7 +55,7 @@ class Rendering {
     isRed: boolean;
     colorString: string = 'rgb(200,0,0)';
     pointsList = [];
-    seperationDistance:number = 90;
+    seperationDistance:number = 70;
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         this.context = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -76,7 +75,7 @@ class Rendering {
         this.context.fillRect(0,0,800,800);
     }
     update() {
-        this.context.fillStyle = 'black';
+        this.context.fillStyle = 'rgb(235, 235, 200)';
         this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
         for(let i =0; i<this.pointsList.length-1; i++){
             this.pointsList[i].update();
@@ -84,21 +83,25 @@ class Rendering {
             this.context.moveTo(this.pointsList[i].position.x,this.pointsList[i].position.y);
             this.context.arc(this.pointsList[i].position.x, this.pointsList[i].position.y, this.pointsList[i].width,0,360);
             this.context.fill();
-            this.context.fill();
             for(let x=i+1; x<this.pointsList.length-1; x++){
                 if(x != this.pointsList.length-1){
                     if(this.pointsList[i].distanceTo(this.pointsList[x])<=this.seperationDistance){
+                        
                         this.context.lineTo(this.pointsList[x].position.x,this.pointsList[x].position.y);
                     }
+                    
                 }
             }
+            this.context.strokeStyle = 'white';
             this.context.stroke();
             
         }
+        requestAnimationFrame(()=>this.update());
     }
 }
 function initialize() {
     var render = new Rendering(document.getElementById("mainCanvas") as HTMLCanvasElement);
-    var timer = setInterval(()=>render.update(), 18);
+    requestAnimationFrame(()=>render.update());
+    //var timer = setInterval(()=>render.update(), 18);
 }
 
