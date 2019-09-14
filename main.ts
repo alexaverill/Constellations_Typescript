@@ -38,10 +38,13 @@ class AnimatedPoint {
         }else if( this.position.x  <0){
             this.position.x = this.bounds.x -10;
         }
-        if(this.position.y > this.bounds.y || this.position.y < 0){
-            this.speed.y *= -1;
+        if(this.position.y > this.bounds.y){
+            this.position.y = 10;
+        }else if( this.position.y  <0){
+            this.position.y = this.bounds.y -10;
         }
-            
+        
+        
         this.position.x += this.speed.x;
         this.position.y += this.speed.y;
     }
@@ -70,22 +73,24 @@ class Rendering {
         }
     }
     getWidth() {
-        return Math.max(
-          document.body.scrollWidth,
-          document.documentElement.scrollWidth,
-          document.body.offsetWidth,
-          document.documentElement.offsetWidth,
-          document.documentElement.clientWidth
-        );
+        return window.innerWidth;//document.body.clientWidth;
+        // return Math.max(
+        //   document.body.scrollWidth,
+        //   document.documentElement.scrollWidth,
+        //   document.body.offsetWidth,
+        //   document.documentElement.offsetWidth,
+        //   document.documentElement.clientWidth
+        // );
       }
       getHeight() {
-        return Math.max(
-          document.body.scrollHeight,
-          document.documentElement.scrollHeight,
-          document.body.offsetHeight,
-          document.documentElement.offsetHeight,
-          document.documentElement.clientHeight
-        );
+          return window.innerHeight;
+        // return Math.max(
+        //   document.body.scrollHeight,
+        //   document.documentElement.scrollHeight,
+        //   document.body.offsetHeight,
+        //   document.documentElement.offsetHeight,
+        //   document.documentElement.clientHeight
+        // );
       }
     setBackgroundColor(color:string){
         this.context.fillStyle = color;
@@ -93,8 +98,8 @@ class Rendering {
     }
     handleSizeChanged(){
         console.log("Size Changed!");
-        this.canvas.height = 100;//this.getHeight();
-        this.canvas.width = 100;//this.getWidth();
+        this.canvas.height = this.getHeight();
+        this.canvas.width = this.getWidth();
         let newSize = new Vector2(this.canvas.width,this.canvas.height);
         for(let x=0;x<this.pointsList.length; x++){
             this.pointsList[x].setBounds(newSize);
