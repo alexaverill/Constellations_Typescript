@@ -21,8 +21,8 @@ var AnimatedPoint = /** @class */ (function () {
         this.width = width;
         this.height = height;
         this.position = position;
-        var xSpeed = (Math.random() * 2) - 1;
-        var ySpeed = (Math.random() * 2) - 1;
+        var xSpeed = (Math.random() * 1.5) - 1;
+        var ySpeed = (Math.random() * 1.5) - 1;
         this.speed = new Vector2(xSpeed, ySpeed);
         this.bounds = bounds;
     }
@@ -54,7 +54,7 @@ var Rendering = /** @class */ (function () {
     function Rendering(canvas) {
         this.colorString = 'rgb(200,0,0)';
         this.pointsList = [];
-        this.seperationDistance = 100;
+        this.seperationDistance = 50;
         this.canvas = canvas;
         this.canvas.width = this.getWidth();
         this.canvas.height = this.getHeight();
@@ -64,7 +64,7 @@ var Rendering = /** @class */ (function () {
         for (var x = 0; x < 100; x++) {
             var xPos = Math.random() * this.canvas.width + 8;
             var yPos = Math.random() * this.canvas.height + 8;
-            this.pointsList[x] = new AnimatedPoint(4, 4, new Vector2(xPos, yPos), bounds);
+            this.pointsList[x] = new AnimatedPoint(3, 3, new Vector2(xPos, yPos), bounds);
         }
     }
     Rendering.prototype.getWidth = function () {
@@ -92,16 +92,12 @@ var Rendering = /** @class */ (function () {
         this.context.fillRect(0, 0, 800, 800);
     };
     Rendering.prototype.handleSizeChanged = function () {
-        console.log("Size Changed!");
         this.canvas.height = this.getHeight();
         this.canvas.width = this.getWidth();
         var newSize = new Vector2(this.canvas.width, this.canvas.height);
         for (var x = 0; x < this.pointsList.length; x++) {
             this.pointsList[x].setBounds(newSize);
         }
-        // this.pointsList.forEach((point)=> {
-        //     point.setBounds(newSize);
-        // });
     };
     Rendering.prototype.update = function () {
         var _this = this;

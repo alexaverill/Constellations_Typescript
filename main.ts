@@ -24,8 +24,8 @@ class AnimatedPoint {
         this.width = width;
         this.height = height;
         this.position = position;
-        let xSpeed = (Math.random() * 2) -1;
-        let ySpeed = (Math.random()* 2) - 1;
+        let xSpeed = (Math.random() * 1.5) -1;
+        let ySpeed = (Math.random()* 1.5) - 1;
         this.speed = new Vector2(xSpeed,ySpeed);        
         this.bounds = bounds;
     }
@@ -57,7 +57,7 @@ class Rendering {
     context: CanvasRenderingContext2D;
     colorString: string = 'rgb(200,0,0)';
     pointsList = [];
-    seperationDistance:number = 100;
+    seperationDistance:number = 50;
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         this.canvas.width = this.getWidth();
@@ -69,7 +69,7 @@ class Rendering {
             let xPos = Math.random()*this.canvas.width +8;
             let yPos = Math.random()*this.canvas.height +8;
             
-            this.pointsList[x] = new AnimatedPoint(4,4,new Vector2(xPos,yPos),bounds);
+            this.pointsList[x] = new AnimatedPoint(3,3,new Vector2(xPos,yPos),bounds);
         }
     }
     getWidth() {
@@ -97,16 +97,12 @@ class Rendering {
         this.context.fillRect(0,0,800,800);
     }
     handleSizeChanged(){
-        console.log("Size Changed!");
         this.canvas.height = this.getHeight();
         this.canvas.width = this.getWidth();
         let newSize = new Vector2(this.canvas.width,this.canvas.height);
         for(let x=0;x<this.pointsList.length; x++){
             this.pointsList[x].setBounds(newSize);
         }
-        // this.pointsList.forEach((point)=> {
-        //     point.setBounds(newSize);
-        // });
     }
     update() {
         this.context.fillStyle = 'rgb(235, 235, 200)';
@@ -127,6 +123,7 @@ class Rendering {
                 }
             }
             this.context.strokeStyle = 'white';
+            
             this.context.stroke();
             
         }
