@@ -21,14 +21,14 @@ var AnimatedPoint = /** @class */ (function () {
         this.width = width;
         this.height = height;
         this.position = position;
-        if (Math.random() * 10 > 5) {
-            this.speed = new Vector2(1, 1);
-        }
-        else {
-            this.speed = new Vector2(1, -1);
-        }
+        var xSpeed = (Math.random() * 2) - 1;
+        var ySpeed = (Math.random() * 2) - 1;
+        this.speed = new Vector2(xSpeed, ySpeed);
         this.bounds = bounds;
     }
+    AnimatedPoint.prototype.setBounds = function (bounds) {
+        this.bounds = bounds;
+    };
     AnimatedPoint.prototype.update = function () {
         if (this.position.x > this.bounds.x) {
             this.position.x = 10;
@@ -51,12 +51,12 @@ var Rendering = /** @class */ (function () {
     function Rendering(canvas) {
         this.colorString = 'rgb(200,0,0)';
         this.pointsList = [];
-        this.seperationDistance = 70;
+        this.seperationDistance = 100;
         this.canvas = canvas;
+        this.canvas.width = this.getWidth();
+        this.canvas.height = this.getHeight();
         this.context = canvas.getContext('2d');
-        this.setBackgroundColor(this.colorString);
         this.context.fillRect(0, 0, 800, 800);
-        this.isRed = true;
         var bounds = new Vector2(this.canvas.width, this.canvas.height);
         for (var x = 0; x < 100; x++) {
             var xPos = Math.random() * this.canvas.width + 8;
@@ -64,9 +64,27 @@ var Rendering = /** @class */ (function () {
             this.pointsList[x] = new AnimatedPoint(4, 4, new Vector2(xPos, yPos), bounds);
         }
     }
+    Rendering.prototype.getWidth = function () {
+        return Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, document.body.offsetWidth, document.documentElement.offsetWidth, document.documentElement.clientWidth);
+    };
+    Rendering.prototype.getHeight = function () {
+        return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight, document.documentElement.offsetHeight, document.documentElement.clientHeight);
+    };
     Rendering.prototype.setBackgroundColor = function (color) {
         this.context.fillStyle = color;
         this.context.fillRect(0, 0, 800, 800);
+    };
+    Rendering.prototype.handleSizeChanged = function () {
+        console.log("Size Changed!");
+        this.canvas.height = 100; //this.getHeight();
+        this.canvas.width = 100; //this.getWidth();
+        var newSize = new Vector2(this.canvas.width, this.canvas.height);
+        for (var x = 0; x < this.pointsList.length; x++) {
+            this.pointsList[x].setBounds(newSize);
+        }
+        // this.pointsList.forEach((point)=> {
+        //     point.setBounds(newSize);
+        // });
     };
     Rendering.prototype.update = function () {
         var _this = this;
@@ -94,6 +112,6 @@ var Rendering = /** @class */ (function () {
 }());
 function initialize() {
     var render = new Rendering(document.getElementById("mainCanvas"));
+    window.onresize = function () { return render.handleSizeChanged(); };
     requestAnimationFrame(function () { return render.update(); });
-    //var timer = setInterval(()=>render.update(), 18);
 }
