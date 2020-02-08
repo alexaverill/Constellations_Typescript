@@ -51,10 +51,14 @@ var AnimatedPoint = /** @class */ (function () {
     return AnimatedPoint;
 }());
 var Rendering = /** @class */ (function () {
-    function Rendering(canvas) {
+    function Rendering(canvas, wScale, hScale) {
         this.colorString = 'rgb(200,0,0)';
         this.pointsList = [];
         this.seperationDistance = 50;
+        this.widthScale = 1;
+        this.heightScale = 1;
+        this.widthScale = wScale;
+        this.heightScale = hScale;
         this.canvas = canvas;
         this.canvas.width = this.getWidth();
         this.canvas.height = this.getHeight();
@@ -68,24 +72,10 @@ var Rendering = /** @class */ (function () {
         }
     }
     Rendering.prototype.getWidth = function () {
-        return window.innerWidth; //document.body.clientWidth;
-        // return Math.max(
-        //   document.body.scrollWidth,
-        //   document.documentElement.scrollWidth,
-        //   document.body.offsetWidth,
-        //   document.documentElement.offsetWidth,
-        //   document.documentElement.clientWidth
-        // );
+        return window.innerWidth * this.widthScale;
     };
     Rendering.prototype.getHeight = function () {
-        return window.innerHeight;
-        // return Math.max(
-        //   document.body.scrollHeight,
-        //   document.documentElement.scrollHeight,
-        //   document.body.offsetHeight,
-        //   document.documentElement.offsetHeight,
-        //   document.documentElement.clientHeight
-        // );
+        return window.innerHeight * this.heightScale;
     };
     Rendering.prototype.setBackgroundColor = function (color) {
         this.context.fillStyle = color;
@@ -124,7 +114,7 @@ var Rendering = /** @class */ (function () {
     return Rendering;
 }());
 function initialize() {
-    var render = new Rendering(document.getElementById("mainCanvas"));
+    var render = new Rendering(document.getElementById("mainCanvas"), .5, .5);
     window.onresize = function () { return render.handleSizeChanged(); };
     requestAnimationFrame(function () { return render.update(); });
 }
