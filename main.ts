@@ -123,7 +123,7 @@ class Rendering {
 }
 
 function initialize() {
-    var render = new Rendering(document.getElementById("mainCanvas") as HTMLCanvasElement, .5,.5);
+    var render = new Rendering(document.getElementById("mainCanvas") as HTMLCanvasElement, 1,1);
     window.onresize = () => render.handleSizeChanged();
     requestAnimationFrame(() => render.update());
 }

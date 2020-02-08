@@ -114,7 +114,7 @@ var Rendering = /** @class */ (function () {
     return Rendering;
 }());
 function initialize() {
-    var render = new Rendering(document.getElementById("mainCanvas"), .5, .5);
+    var render = new Rendering(document.getElementById("mainCanvas"), 1, 1);
     window.onresize = function () { return render.handleSizeChanged(); };
     requestAnimationFrame(function () { return render.update(); });
 }
