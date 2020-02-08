@@ -59,6 +59,8 @@ class Rendering {
     pointsList = [];
     seperationDistance:number = 50;
     constructor(canvas: HTMLCanvasElement) {
+	canvas.width = innerWidth * .75;
+	canvas.height = innerHeight * .25;
         this.canvas = canvas;
         this.canvas.width = this.getWidth();
         this.canvas.height = this.getHeight();
