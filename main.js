@@ -51,7 +51,7 @@ var AnimatedPoint = /** @class */ (function () {
     return AnimatedPoint;
 }());
 var Rendering = /** @class */ (function () {
-    function Rendering(canvas, wScale, hScale) {
+    function Rendering(canvas, wScale, hScale, amount, seperation) {
         this.colorString = 'rgb(200,0,0)';
         this.pointsList = [];
         this.seperationDistance = 50;
@@ -64,8 +64,9 @@ var Rendering = /** @class */ (function () {
         this.canvas.height = this.getHeight();
         this.context = canvas.getContext('2d');
         this.context.fillRect(0, 0, 800, 800);
+        this.seperationDistance = seperation;
         var bounds = new Vector2(this.canvas.width, this.canvas.height);
-        for (var x = 0; x < 100; x++) {
+        for (var x = 0; x < amount; x++) {
             var xPos = Math.random() * this.canvas.width + 8;
             var yPos = Math.random() * this.canvas.height + 8;
             this.pointsList[x] = new AnimatedPoint(3, 3, new Vector2(xPos, yPos), bounds);
@@ -113,8 +114,8 @@ var Rendering = /** @class */ (function () {
     };
     return Rendering;
 }());
-function initialize() {
-    var render = new Rendering(document.getElementById("mainCanvas"), 1, 1);
+function initialize(amount, seperation) {
+    var render = new Rendering(document.getElementById("mainCanvas"), 1, 1, amount, seperation);
     window.onresize = function () { return render.handleSizeChanged(); };
     requestAnimationFrame(function () { return render.update(); });
 }

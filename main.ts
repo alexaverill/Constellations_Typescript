@@ -61,7 +61,7 @@ class Rendering {
     widthScale : number = 1;
     heightScale: number = 1;
 
-    constructor(canvas: HTMLCanvasElement, wScale:number,hScale:number) {
+    constructor(canvas: HTMLCanvasElement, wScale:number,hScale:number, amount:number, seperation:number) {
         this.widthScale = wScale;
         this.heightScale = hScale;
         this.canvas = canvas;
@@ -69,8 +69,10 @@ class Rendering {
         this.canvas.height = this.getHeight();
         this.context = canvas.getContext('2d') as CanvasRenderingContext2D;
         this.context.fillRect(0, 0, 800, 800);
+        this.seperationDistance = seperation;
+
         let bounds: Vector2 = new Vector2(this.canvas.width, this.canvas.height);
-        for (let x = 0; x < 100; x++) {
+        for (let x = 0; x < amount; x++) {
             let xPos = Math.random() * this.canvas.width + 8;
             let yPos = Math.random() * this.canvas.height + 8;
 
@@ -122,8 +124,8 @@ class Rendering {
     }
 }
 
-function initialize() {
-    var render = new Rendering(document.getElementById("mainCanvas") as HTMLCanvasElement, 1,1);
+function initialize(amount, seperation) {
+    var render = new Rendering(document.getElementById("mainCanvas") as HTMLCanvasElement, 1,1,amount, seperation);
     window.onresize = () => render.handleSizeChanged();
     requestAnimationFrame(() => render.update());
 }
